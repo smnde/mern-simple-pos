@@ -16,7 +16,7 @@ payloadnya :
 username: "rest"
 password: "123qweasd"
 
-Jika bakend belum berjalan dengan normal, coba di build ulang
+Jika bakend belum berjalan dengan normal, coba dibuild ulang
 Jalankan :
 docker compose down
 lalu

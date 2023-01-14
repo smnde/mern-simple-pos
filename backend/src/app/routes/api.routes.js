@@ -4,6 +4,7 @@ import UsersService from "../services/users.service.js";
 import CategoriesService from "../services/categories.service.js";
 import ProductsService from "../services/products.service.js";
 import OrdersService from "../services/orders.service.js";
+import SalesService from "../services/sales.service.js";
 import { isLogin } from "../middlewares/auth.middleware.js";
 import { isAdmin, isCashier } from "../middlewares/role.middleware.js";
 
@@ -36,5 +37,11 @@ route.get("/orders/:id", isAdmin, OrdersService.show);
 route.post("/orders", isAdmin, isAdmin, OrdersService.store);
 route.put("/orders/:id", isAdmin, OrdersService.update);
 route.delete("/orders/:id", isAdmin, OrdersService.destroy);
+
+route.get("/sales", isLogin, SalesService.index);
+route.get("/sales/:id", isLogin, SalesService.show);
+route.post("/sales", isCashier, SalesService.store);
+route.put("/return-sales/:id", isCashier, SalesService.returnItem);
+route.delete("/sales/:id", isCashier, SalesService.destroy);
 
 export default route;

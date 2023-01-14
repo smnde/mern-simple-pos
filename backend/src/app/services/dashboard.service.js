@@ -1,4 +1,5 @@
 import Sales from "../schemas/sales.schemas.js";
+import Expense from "../schemas/expenses.schema.js";
 
 const DashboardService = {
 	/**
@@ -17,6 +18,14 @@ const DashboardService = {
 				.where("status")
 				.equals("sold")
 				.exec();
+
+			const expenses = await Expense.find({})
+				.where("createdAt")
+				.gte(new Date().setHours(0, 0, 0, 0))
+				.where("status")
+				.equals("success")
+				.exec();
+
 			// Filter sales by date
 			const todaySales = sales.filter((sale) => {
 				const salesDate = new Date(sale.createdAt);
@@ -26,14 +35,22 @@ const DashboardService = {
 					salesDate.getFullYear() === new Date().getFullYear()
 				);
 			});
+
 			// get todays revenue
 			const todayRevenue = todaySales.reduce((acc, sale) => {
 				return acc + sale.grandTotal;
 			}, 0);
+
 			// get todays profit
 			const todayProfit = todaySales.reduce((acc, sale) => {
 				return acc + sale.totalProfit;
 			}, 0);
+
+			// get todays expenses
+			const todayExpenses = expenses.reduce((acc, expense) => {
+				return acc + expense.amount;
+			}, 0);
+
 			// today sales count
 			const todaySalesCount = todaySales.length;
 			return res.status(200).json({
@@ -42,6 +59,7 @@ const DashboardService = {
 					todayRevenue,
 					todayProfit,
 					todaySalesCount,
+					todayExpenses,
 				},
 			});
 		} catch (error) {

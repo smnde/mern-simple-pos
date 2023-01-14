@@ -6,6 +6,7 @@ import ProductsService from "../services/products.service.js";
 import OrdersService from "../services/orders.service.js";
 import SalesService from "../services/sales.service.js";
 import DashboardService from "../services/dashboard.service.js";
+import ExpensesService from "../services/expenses.service.js";
 import { isLogin } from "../middlewares/auth.middleware.js";
 import { isAdmin, isCashier } from "../middlewares/role.middleware.js";
 
@@ -46,5 +47,11 @@ route.get("/sales/:id", isLogin, SalesService.show);
 route.post("/sales", isCashier, SalesService.store);
 route.put("/return-sales/:id", isCashier, SalesService.returnItem);
 route.delete("/sales/:id", isCashier, SalesService.destroy);
+
+route.get("/expenses", isCashier, ExpensesService.index);
+route.get("/expenses/:id", isCashier, ExpensesService.show);
+route.post("/expenses", isCashier, ExpensesService.store);
+route.put("/expenses/:id", isCashier, ExpensesService.update);
+route.delete("/expenses/:id", isCashier, ExpensesService.destroy);
 
 export default route;

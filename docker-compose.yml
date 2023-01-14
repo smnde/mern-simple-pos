@@ -1,0 +1,82 @@
+version: "3.7"
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: pos-server
+    container_name: pos-server
+    command: /usr/src/app/node_modules/.bin/nodemon ./src/server.js
+    volumes:
+      - ./backend:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db1
+      - db2
+      - db3
+    env_file:
+      - ./backend/.env
+    networks:
+      - pos-network
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    image: pos-client
+    container_name: pos-client
+    volumes:
+      - ./client:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - pos-network
+
+  db1:
+    image: mongo
+    container_name: pos-mongo1
+    volumes:
+      - ./mongo-data/db1:/data/db
+    ports:
+      - "27017:27017"
+    command: mongod --replSet rs0 --port 27017
+    networks:
+      - pos-network
+
+  db2:
+    image: mongo
+    container_name: pos-mongo2
+    volumes:
+      - ./mongo-data/db2:/data/db
+    ports:
+      - "27018:27017"
+    command: mongod --replSet rs0 --port 27017
+    networks:
+      - pos-network
+
+  db3:
+    image: mongo
+    container_name: pos-mongo3
+    volumes:
+      - ./mongo-data/db3:/data/db
+    ports:
+      - "27019:27017"
+    command: mongod --replSet rs0 --port 27017
+    networks:
+      - pos-network
+
+networks:
+  pos-network:
+    driver: bridge
+
+volumes:
+  mongo-data:
+  node-modules:
+  web-root:
+    driver: local

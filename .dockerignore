@@ -1,0 +1,8 @@
+#ignoring files
+
+.gitignore
+db.sh
+dbinit.sh
+
+backend/node_modules
+client/node_modules

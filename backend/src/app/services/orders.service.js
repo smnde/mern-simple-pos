@@ -17,6 +17,8 @@ const OrdersService = {
 
 		try {
 			const orders = await Order.find({ createdAt: { $gte: today } })
+				.limit(15)
+				.sort({ createdAt: -1 })
 				.populate("user", "name -_id")
 				.populate("details.product", "name");
 
@@ -26,6 +28,15 @@ const OrdersService = {
 		}
 	},
 
+	/**
+	 * @param {Request} req
+	 * @param {Response} res
+	 * @returns {Promise<Response>}
+	 * @description Search order by keyword
+	 * @route GET /orders/search
+	 * @access admin
+	 * @query keyword
+	 */
 	search: async (req, res) => {
 		const { keyword } = req.query;
 
@@ -90,9 +101,7 @@ const OrdersService = {
 			session.startTransaction();
 
 			// calculate grand total
-			const grandTotal = items.reduce((acc, item) => {
-				return acc + item.quantity * item.price;
-			}, 0);
+			const grandTotal = calculateGrandTotal(items);
 
 			// create order
 			const order = await Order.create(
@@ -196,9 +205,7 @@ const OrdersService = {
 
 			product.quantity = quantity;
 
-			const grandTotal = order.details.reduce((acc, item) => {
-				return acc + item.quantity * item.price;
-			}, 0);
+			const grandTotal = calculateGrandTotal(order.details);
 
 			await Order.findByIdAndUpdate(
 				req.params.id,

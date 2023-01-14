@@ -5,6 +5,7 @@ import CategoriesService from "../services/categories.service.js";
 import ProductsService from "../services/products.service.js";
 import OrdersService from "../services/orders.service.js";
 import SalesService from "../services/sales.service.js";
+import DashboardService from "../services/dashboard.service.js";
 import { isLogin } from "../middlewares/auth.middleware.js";
 import { isAdmin, isCashier } from "../middlewares/role.middleware.js";
 
@@ -13,6 +14,8 @@ const route = express.Router();
 route.post("/login", AuthService.login);
 route.get("/logout", AuthService.logout);
 route.get("/refresh-token", AuthService.refreshToken);
+
+route.get("/dashboard", isLogin, DashboardService.index);
 
 route.get("/users", isAdmin, UsersService.index);
 route.get("/users/:id", isAdmin, UsersService.show);

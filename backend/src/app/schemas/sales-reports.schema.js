@@ -10,8 +10,8 @@ const SalesReportsSchema = new Schema(
 			{
 				_id: false,
 				product: { type: Schema.Types.ObjectId, ref: "Product" },
-				qty: { type: Number },
-				purchasePrice: { type: Number },
+				quantity: { type: Number },
+				cost: { type: Number },
 				price: { type: Number },
 				total: { type: Number },
 				profit: { type: Number },

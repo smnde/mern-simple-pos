@@ -9,7 +9,7 @@ const SalesSchema = new Schema(
 			{
 				_id: false,
 				product: { type: Schema.Types.ObjectId, ref: "Product" },
-				qty: { type: Number, required: true },
+				quantity: { type: Number, required: true },
 				price: { type: Number, required: true },
 			},
 		],

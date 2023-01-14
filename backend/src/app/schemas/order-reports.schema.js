@@ -16,7 +16,7 @@ const OrderReportsSchema = new Schema(
 			},
 		],
 		grandTotal: { type: Number },
-		status: { type: String },
+		status: { type: String, default: "success" },
 	},
 	{
 		timestamps: true,

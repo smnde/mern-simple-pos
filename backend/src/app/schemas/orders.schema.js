@@ -10,7 +10,7 @@ const OrdersSchema = new Schema(
 				_id: false,
 				product: { type: Schema.Types.ObjectId, ref: "Product" },
 				price: { type: Number, required: true },
-				qty: { type: Number, required: true },
+				quantity: { type: Number, required: true },
 			},
 		],
 		grandTotal: { type: Number, required: true },

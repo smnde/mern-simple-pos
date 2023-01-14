@@ -12,7 +12,7 @@ const UsersService = {
 	 */
 	index: async (req, res) => {
 		try {
-			const users = await User.find({});
+			const users = await User.find({}).limit(15).sort({ role: 1 });
 			return res.status(200).json({
 				success: true,
 				users,

@@ -12,7 +12,10 @@ const ProductsService = {
 	 */
 	index: async (req, res) => {
 		try {
-			const products = await Product.find({}).populate("category");
+			const products = await Product.find({})
+				.limit(15)
+				.sort({ name: 1 })
+				.populate("category", "name -_id");
 
 			return res.status(200).json({
 				success: true,
@@ -38,7 +41,8 @@ const ProductsService = {
 	show: async (req, res) => {
 		try {
 			const product = await Product.findById(req.params.id).populate(
-				"category"
+				"category",
+				"name -_id"
 			);
 
 			if (!product) {

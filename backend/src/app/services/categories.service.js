@@ -11,7 +11,9 @@ const CategoriesService = {
 	 */
 	index: async (req, res) => {
 		try {
-			const categories = await Category.find({}).populate("products");
+			const categories = await Category.find().limit(15).sort({
+				name: 1,
+			});
 
 			return res.status(200).json({
 				success: true,

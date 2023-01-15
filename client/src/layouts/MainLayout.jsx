@@ -1,11 +1,11 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import Nav from "../components/Navbar";
+import Sidenav from "../components/Sidenav";
 
 export default function MainLayout() {
 	return (
 		<>
-			<Nav />
+			<Sidenav />
 			<Outlet />
 		</>
 	);

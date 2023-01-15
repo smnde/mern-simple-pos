@@ -38,7 +38,7 @@ const AuthController = {
 			.then((user) => {
 				res.cookie(keyName, refreshToken, {
 					httpOnly: true,
-
+					secure: true,
 					sameSite: "none",
 				});
 
@@ -57,7 +57,7 @@ const AuthController = {
 	 * @access Public
 	 */
 	logout: async (req, res) => {
-		const user = await User.findOne(req.user._id);
+		const user = await User.findById(req.userId);
 		if (!user) return res.status(404).send({ message: "User Not found." });
 
 		await user
@@ -65,6 +65,7 @@ const AuthController = {
 			.then(() => {
 				res.clearCookie(keyName, {
 					httpOnly: true,
+					secure: true,
 					sameSite: "none",
 				});
 
@@ -80,18 +81,32 @@ const AuthController = {
 	 * @access Public
 	 */
 	refreshToken: async (req, res) => {
-		const user = await User.findOne(req.user._id);
+		const user = await User.findById(req.userId);
 		if (!user) return res.status(404).send({ message: "User Not found." });
 
 		const accessToken = generateAccessToken({ id: user._id });
 
 		res.cookie(keyName, req.cookies[String(keyName)], {
 			httpOnly: true,
-
+			secure: true,
 			sameSite: "none",
 		});
 
 		return res.status(200).send({ token: accessToken });
+	},
+
+	/**
+	 * @param {Request} req
+	 * @param {Response} res
+	 * @returns {Promise<Response>}
+	 * @description get user info
+	 * @access Public
+	 */
+	getAuth: async (req, res) => {
+		const user = await User.findById(req.userId);
+		if (!user) return res.status(404).send({ message: "User Not found." });
+
+		return res.status(200).json(user);
 	},
 };
 

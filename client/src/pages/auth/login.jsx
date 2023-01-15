@@ -1,6 +1,22 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+import { useForm } from "react-hook-form";
+import { useLoginMutation } from "../../services/api/auth.api";
+import { useNavigate } from "react-router-dom";
+import { setCredentials } from "../../services/slice/auth.slice";
 
 export default function Login() {
+	const dispatch = useDispatch();
+	const redirect = useNavigate();
+	const { register, handleSubmit } = useForm();
+	const [login] = useLoginMutation();
+
+	const signIn = async (data) => {
+		const user = await login(data).unwrap();
+		dispatch(setCredentials(user));
+		redirect("/");
+	};
+
 	return (
 		<div className="container">
 			<div className="row d-flex justify-content-center align-items-center vh-100 ">
@@ -10,7 +26,7 @@ export default function Login() {
 							<h4 className="text-center">Login</h4>
 						</div>
 						<div className="card-body">
-							<form>
+							<form onSubmit={handleSubmit(signIn)}>
 								<div className="mb-3">
 									<label htmlFor="username" className="form-label">
 										Username
@@ -20,6 +36,7 @@ export default function Login() {
 										name="username"
 										className={`form-control`}
 										placeholder="Username"
+										{...register("username", { required: true })}
 									/>
 								</div>
 								<div className="mb-3">
@@ -31,6 +48,7 @@ export default function Login() {
 										name="password"
 										className={`form-control`}
 										placeholder="Password"
+										{...register("password", { required: true })}
 									/>
 								</div>
 								<button

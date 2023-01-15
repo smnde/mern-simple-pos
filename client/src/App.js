@@ -1,14 +1,8 @@
 import React from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
+import Router from "./routes";
 import "./App.css";
-import Nav from "../src/component/Navbar";
+import "bootstrap/dist/css/bootstrap.min.css";
 
-function App() {
-  return (
-    <div className="App">
-      <Nav />
-    </div>
-  );
+export default function App() {
+	return <Router />;
 }
-
-export default App;

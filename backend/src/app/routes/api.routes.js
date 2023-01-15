@@ -9,12 +9,14 @@ import DashboardService from "../services/dashboard.service.js";
 import ExpensesService from "../services/expenses.service.js";
 import { isLogin } from "../middlewares/auth.middleware.js";
 import { isAdmin, isCashier } from "../middlewares/role.middleware.js";
+import { verifyRefreshToken } from "../middlewares/token.middleware.js";
 
 const route = express.Router();
 
 route.post("/login", AuthService.login);
-route.get("/logout", AuthService.logout);
-route.get("/refresh-token", AuthService.refreshToken);
+route.get("/get-auth", isLogin, AuthService.getAuth);
+route.get("/logout", verifyRefreshToken, AuthService.logout);
+route.get("/refresh-token", verifyRefreshToken, AuthService.refreshToken);
 
 route.get("/dashboard", isLogin, DashboardService.index);
 

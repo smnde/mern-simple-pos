@@ -1,5 +1,5 @@
 import { fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
-import { logout, refreshToken } from "../slice/auth.slice";
+import { clearCredential, refreshToken } from "../slice/auth.slice";
 import { Mutex } from "async-mutex";
 
 const baseURL = "http://localhost:5000/api/v1";
@@ -18,14 +18,14 @@ export const customFetchBase = async (args, api, extraOptions) => {
 	await mutex.waitForUnlock();
 	let result = await baseQuery(args, api, extraOptions);
 
-	// if unauthorized, cookies expired or deleted
+	// if unauthorized, cookies expired or deleted, clear credential (auth state)
 	if (result.error && result.error.status === 401) {
-		api.dispatch(logout());
+		api.dispatch(clearCredential());
 		result = await baseQuery(args, api, extraOptions);
 	}
 
 	if (result.error && result.error.status === 405) {
-		if (!mutex.isLocked) {
+		if (!mutex.isLocked()) {
 			const release = await mutex.acquire();
 			try {
 				const refreshResult = await baseQuery(
@@ -33,12 +33,11 @@ export const customFetchBase = async (args, api, extraOptions) => {
 					api,
 					extraOptions
 				);
-
 				if (refreshResult.data) {
 					api.dispatch(refreshToken(refreshResult.data));
 					result = await baseQuery(args, api, extraOptions);
 				} else {
-					api.dispatch(logout());
+					api.dispatch(clearCredential());
 				}
 			} finally {
 				release();

@@ -11,8 +11,8 @@ export default function Login() {
 	const { register, handleSubmit } = useForm();
 	const [login] = useLoginMutation();
 
-	const signIn = async (data) => {
-		const user = await login(data).unwrap();
+	const signIn = async (payload) => {
+		const user = await login(payload).unwrap();
 		dispatch(setCredentials(user));
 		redirect("/");
 	};

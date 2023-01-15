@@ -60,6 +60,7 @@ const DashboardService = {
 					todayProfit,
 					todaySalesCount,
 					todayExpenses,
+					sales,
 				},
 			});
 		} catch (error) {

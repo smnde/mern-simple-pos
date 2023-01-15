@@ -16,4 +16,6 @@ COPY . .
 
 EXPOSE 3000
 
+RUN chown -R node:node /usr/src/app/node_modules
+
 CMD ["npm", "start"]

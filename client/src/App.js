@@ -19,6 +19,7 @@ import NotFound from "./pages/errors/404";
 import { useDispatch, useSelector } from "react-redux";
 import { useLazyGetAuthUserQuery } from "./services/api/auth.api";
 import { setAuthUser } from "./services/slice/auth.slice";
+import { Toaster } from "react-hot-toast";
 
 export default function App() {
 	const dispatch = useDispatch();
@@ -34,115 +35,126 @@ export default function App() {
 	}, [auth.isLogin, getAuthUser, dispatch]);
 
 	return (
-		<BrowserRouter>
-			<Routes>
-				<Route
-					path="/login"
-					element={
-						<PublicRoutes>
-							<Login />
-						</PublicRoutes>
-					}
-				/>
-				<Route path="*" element={<NotFound />} />
+		<>
+			<Toaster
+				position="top-center"
+				reverseOrder={false}
+				containerStyle={{
+					top: 100,
+					animation: "ease-in-out",
+				}}
+			/>
 
-				<Route path="/" element={<MainLayout />}>
+			<BrowserRouter>
+				<Routes>
 					<Route
-						path="/"
+						path="/login"
 						element={
-							<PrivateRoutes>
-								<h1>Dashboard</h1>
-							</PrivateRoutes>
+							<PublicRoutes>
+								<Login />
+							</PublicRoutes>
 						}
 					/>
-					<Route
-						path="/users"
-						element={
-							<PrivateRoutes>
-								<AdminRoutes>
-									<Users />
-								</AdminRoutes>
-							</PrivateRoutes>
-						}
-					/>
-					<Route
-						path="/categories"
-						element={
-							<PrivateRoutes>
-								<AdminRoutes>
-									<Categories />
-								</AdminRoutes>
-							</PrivateRoutes>
-						}
-					/>
-					<Route
-						path="/products"
-						element={
-							<PrivateRoutes>
-								<Products />
-							</PrivateRoutes>
-						}
-					/>
-					<Route
-						path="/orders"
-						element={
-							<PrivateRoutes>
-								<AdminRoutes>
-									<Orders />
-								</AdminRoutes>
-							</PrivateRoutes>
-						}
-					/>
-					<Route
-						path="/sales"
-						element={
-							<PrivateRoutes>
-								<Sales />
-							</PrivateRoutes>
-						}
-					/>
-					<Route
-						path="/expenses"
-						element={
-							<PrivateRoutes>
-								<CashierRoutes>
-									<Exepenses />
-								</CashierRoutes>
-							</PrivateRoutes>
-						}
-					/>
-					<Route
-						path="/orders-report"
-						element={
-							<PrivateRoutes>
-								<AdminRoutes>
-									<OrderReports />
-								</AdminRoutes>
-							</PrivateRoutes>
-						}
-					/>
-					<Route
-						path="/sales-report"
-						element={
-							<PrivateRoutes>
-								<AdminRoutes>
-									<SalesReport />
-								</AdminRoutes>
-							</PrivateRoutes>
-						}
-					/>
-					<Route
-						path="/return-sales-report"
-						element={
-							<PrivateRoutes>
-								<AdminRoutes>
-									<ReturnSalesReport />
-								</AdminRoutes>
-							</PrivateRoutes>
-						}
-					/>
-				</Route>
-			</Routes>
-		</BrowserRouter>
+					<Route path="*" element={<NotFound />} />
+
+					<Route path="/" element={<MainLayout />}>
+						<Route
+							path="/"
+							element={
+								<PrivateRoutes>
+									<h1>Dashboard</h1>
+								</PrivateRoutes>
+							}
+						/>
+						<Route
+							path="/users"
+							element={
+								<PrivateRoutes>
+									<AdminRoutes>
+										<Users />
+									</AdminRoutes>
+								</PrivateRoutes>
+							}
+						/>
+						<Route
+							path="/categories"
+							element={
+								<PrivateRoutes>
+									<AdminRoutes>
+										<Categories />
+									</AdminRoutes>
+								</PrivateRoutes>
+							}
+						/>
+						<Route
+							path="/products"
+							element={
+								<PrivateRoutes>
+									<Products />
+								</PrivateRoutes>
+							}
+						/>
+						<Route
+							path="/orders"
+							element={
+								<PrivateRoutes>
+									<AdminRoutes>
+										<Orders />
+									</AdminRoutes>
+								</PrivateRoutes>
+							}
+						/>
+						<Route
+							path="/sales"
+							element={
+								<PrivateRoutes>
+									<Sales />
+								</PrivateRoutes>
+							}
+						/>
+						<Route
+							path="/expenses"
+							element={
+								<PrivateRoutes>
+									<CashierRoutes>
+										<Exepenses />
+									</CashierRoutes>
+								</PrivateRoutes>
+							}
+						/>
+						<Route
+							path="/orders-report"
+							element={
+								<PrivateRoutes>
+									<AdminRoutes>
+										<OrderReports />
+									</AdminRoutes>
+								</PrivateRoutes>
+							}
+						/>
+						<Route
+							path="/sales-report"
+							element={
+								<PrivateRoutes>
+									<AdminRoutes>
+										<SalesReport />
+									</AdminRoutes>
+								</PrivateRoutes>
+							}
+						/>
+						<Route
+							path="/return-sales-report"
+							element={
+								<PrivateRoutes>
+									<AdminRoutes>
+										<ReturnSalesReport />
+									</AdminRoutes>
+								</PrivateRoutes>
+							}
+						/>
+					</Route>
+				</Routes>
+			</BrowserRouter>
+		</>
 	);
 }

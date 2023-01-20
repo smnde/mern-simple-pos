@@ -23,7 +23,7 @@ import { Toaster } from "react-hot-toast";
 
 export default function App() {
 	const dispatch = useDispatch();
-	const { auth } = useSelector((state) => state);
+	const { auth } = useSelector((state) => state.persist);
 	const [getAuthUser] = useLazyGetAuthUserQuery();
 
 	useEffect(() => {

@@ -9,7 +9,7 @@ import { NavLink } from "react-router-dom";
 
 export default function Sidenav() {
 	const dispatch = useDispatch();
-	const { auth } = useSelector((state) => state);
+	const { auth } = useSelector((state) => state.persist);
 	const [loggedOut] = useLazyLogoutQuery();
 
 	const signout = async () => {
